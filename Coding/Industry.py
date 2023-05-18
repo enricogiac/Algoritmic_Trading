@@ -17,7 +17,7 @@ WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html
 WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html.ltr.yahoo-page.height100 body#tcf2-layer1.no-touch.blur-preview-tpl.wizard.tcf-2.yahoo.eu-localized.it-IT.js div#consent-page.theme-2.v4.brandtype-yahoo div.consent-overlay div.container.con-container.is-reject-all-enabled div.con-wizard form.consent-form div.wizard-body div.actions.couple button.btn.secondary.accept-all.consent_reject_all_3"))).click()
 numeri=[1,4]
 lista_tot=[]
-azioni=['AAME','AAPL','ACB','ABNB','ACLS','ADES','APD','AMZN','META','TSLA','F','MSFT','CNHI','CNXN','EAR','EBAY','ECC','NKE','ELSE','FOSL','FTI','GDOT','GES','GILT','GM','GTIM','HTOO','AMP'] 
+azioni=['AAME','AAPL','ACB','ABNB','ACLS','ADES'] 
 time.sleep(3)
 for azione in azioni:
 	driver.get(f'https://it.finance.yahoo.com/quote/{azione}/profile?p={azione}')
@@ -39,7 +39,7 @@ for azione in azioni:
 	lista_tot.append(df)
 result=pd.concat(lista_tot)
 print(result)
-result.to_csv('ziooo.csv')
+#result.to_csv('ziooo.csv')
 
 
 

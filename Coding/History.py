@@ -11,11 +11,11 @@ inizio = datetime(2012,9,15)
 fine = datetime.today()
 
 for tick in tickers:
-    data = yf.download(tick, inizio, fine, interval='1wk')
+    data = yf.download(tick, inizio, fine, interval='1d')
     data=data.assign(Ticket=f"{tick}")
     dataframes.append(data)
 dataframes=pd.concat(dataframes)
 print(dataframes)
-dataframes.to_csv("storici.csv")
+#dataframes.to_csv("storici.csv")
 
 
