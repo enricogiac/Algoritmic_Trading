@@ -17,7 +17,7 @@ azioni=["AAPL", "MSFT", "AMZN", "GOOGL", "META", "TSLA", "NVDA", "PYPL", "INTC",
     "NFLX", "PEP", "ADBE", "CSCO", "AVGO", "TXN", "COST", "TMUS", "AMGN", "QCOM",
     "CHTR", "SBUX", "BKNG", "AMD", "INTU", "ISRG", "GILD", "VRTX", "REGN", "MDLZ",
     "ZM", "MU", "ATVI", "ADP", "MRNA", "ILMN", "CSX", "ADI", "ASML", "IDXX", "FISV",
-    "MELI", "WDAY", "KLAC", "LRCX", "NXPI", "BIIB", "MAR", "EXC", "ALGN", "CTSH"]
+    "MELI", "WDAY", "KLAC", "LRCX", "NXPI", "BIIB", "MAR", "EXC", "ALGN", "CTSH"] 
 numeri=[1,2,3,4,5,6,7,8,9,10]
 for azione in azioni:
     print(f"{azione}")
@@ -26,8 +26,10 @@ for azione in azioni:
     
     for num in numeri:
         print(f"{azione} e pag {num}")
+        if azione=="CHTR" and num==10:
+            continue
 
-        driver.get(f"https://www.barchart.com/stocks/quotes/AAPL/income-statement/quaterly?reportPage=1")
+        driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
         try:
             WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html body.hide-menu-for-landscape.add-ads-premier div.a__sc-np32r2-0.eqYWHN div.Card-sc-1s2p2gv-0.a__sc-3vtlsk-0.kDNyTh.jXixFa div.Card__CardHeader-sc-1s2p2gv-1.a__sc-3vtlsk-1.fZGtpv.cVIXeq div.Frame-sc-1d4hofp-0.fRUcSy button.Button__StyledButton-a1qza5-0.jkvvVr"))).click()
         except:
@@ -46,18 +48,16 @@ for azione in azioni:
         print(lista)
         if len(lista)==0:
             continue
-
+        new = []
         for val in lista:
-            if val==' ':
-                lista.remove(val)
-            else:
-                pass
-                     
-        print(lista)
-        print(len(lista))
+            if val.strip() != '' and val != 'Current Assets' and val != "Non-Current Assets" and val != "Current Liabilities" and val != "Non-Current Liabilities" and val!='ASSETS' and val!='LIABILITIES'and val!="SHAREHOLDERS' EQUITY":
+                new.append(val)
 
+        print(new)
+        print(len(new))
+        lista=new
         lista2=[]
-        if (len(lista)-5)%6==0 and (len(lista)-5)/6>10 :
+        if (len(lista)-5)%6==0: #and len(lista)/6>20:
             i=0
             k=4
             while i<=k:
@@ -75,6 +75,7 @@ for azione in azioni:
             if len(lista2)==5:
                 while i<=len(lista):
                     dic.update({lista[i]:[lista[i+1],lista[i+2],lista[i+3],lista[i+4],lista[i+5]]})
+                    print(dic)
                     i+=6
                     if i==len(lista):
                         break
@@ -168,5 +169,6 @@ fataframes_1=pd.concat(fataframes)
 print(fataframes_1)
 fataframes_1=fataframes_1.reset_index(drop=True)
 print(fataframes_1)
-fataframes_1.to_csv("income_statment_data.csv")
+fataframes_1.to_csv("Balance_dati.csv")
 
+#acb pag lista2

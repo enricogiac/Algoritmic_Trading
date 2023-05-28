@@ -13,8 +13,12 @@ import time
 
 driver=webdriver.Firefox()
 fataframes=[]
-azioni=['AAME','AAPL','ACB','ABNB','ACLS','ADES','APD','AMZN'] 
-numeri=[1,2,3]
+azioni=["AAPL", "MSFT", "AMZN", "GOOGL", "META", "NVDA", "PYPL", "INTC", "CMCSA",
+    "NFLX", "PEP", "ADBE", "CSCO", "AVGO", "TXN", "COST", "TMUS", "AMGN", "QCOM",
+    "CHTR", "SBUX", "BKNG", "AMD", "INTU", "ISRG", "GILD", "VRTX", "REGN", "MDLZ",
+    "ZM", "MU", "ATVI", "ADP", "MRNA", "ILMN", "CSX", "ADI", "ASML", "IDXX", "FISV",
+    "MELI", "WDAY", "KLAC", "LRCX", "NXPI", "BIIB", "MAR", "EXC", "ALGN", "CTSH"]
+numeri=[1,2,3,4,5,6,7,8,9,10]
 for azione in azioni:
     print(f"{azione}")
 
@@ -22,6 +26,8 @@ for azione in azioni:
     
     for num in numeri:
         print(f"{azione} e pag {num}")
+        if azione=="TMUS" and num==5:
+            continue
 
         driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/cash-flow/quaterly?reportPage={num}")
         try:
@@ -51,7 +57,7 @@ for azione in azioni:
         print(len(new))
         lista=new
         lista2=[]
-        if (len(lista)-5)%6==0 and len(lista)/6>20:
+        if (len(lista)-5)%6==0 and (len(lista)-5)/6>10:
             i=0
             k=4
             while i<=k:
@@ -163,6 +169,6 @@ fataframes_1=pd.concat(fataframes)
 print(fataframes_1)
 fataframes_1=fataframes_1.reset_index(drop=True)
 print(fataframes_1)
-# fataframes_1.to_csv("boh.csv")
+fataframes_1.to_csv("cash_flow_new.csv")
 
 #acb pag lista2

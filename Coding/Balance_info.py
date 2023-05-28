@@ -13,7 +13,11 @@ import time
 
 driver=webdriver.Firefox()
 fataframes=[]
-azioni=['AAME','AAPL','ACB','ABNB','ACLS','ADES','APD','AMZN','META','TSLA','F','MSFT','CNHI','CNXN','EAR','EBAY','ECC','NKE','ELSE','FOSL','FTI','GDOT','GES','GILT','GM','GTIM','HTOO','ADS','AMP'] 
+azioni=["AAPL", "MSFT", "AMZN", "GOOGL", "FB", "TSLA", "NVDA", "PYPL", "INTC", "CMCSA",
+    "NFLX", "PEP", "ADBE", "CSCO", "AVGO", "TXN", "COST", "TMUS", "AMGN", "QCOM",
+    "CHTR", "SBUX", "BKNG", "AMD", "INTU", "ISRG", "GILD", "VRTX", "REGN", "MDLZ",
+    "ZM", "MU", "ATVI", "ADP", "MRNA", "ILMN", "CSX", "ADI", "ASML", "IDXX", "FISV",
+    "MELI", "WDAY", "KLAC", "LRCX", "NXPI", "BIIB", "MAR", "EXC", "ALGN", "CTSH"] 
 numeri=[1,2,3,4,5,6,7,8,9,10]
 for azione in azioni:
 	#print(f"{azione}")
@@ -163,7 +167,7 @@ driver.quit()
 fataframes_1=pd.concat(fataframes)
 print(fataframes_1)
 fataframes_1=fataframes_1.reset_index(drop=True)
-fataframes_1.to_csv("boh.csv")
+fataframes_1.to_csv("datu_balance.csv")
 
 # #in teoria dovrebbe ciclare per ogni azione i dataset e inserire una colonna con il nome del dataset
 # for azione in azioni:
