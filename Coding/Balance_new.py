@@ -33,7 +33,7 @@ for azione in tqdm(azioni):
 
     dizio_tot=[]
     
-    for num in tqdm(numeri):
+    for num in numeri:
         print(f"{azione} e pag {num}")
         if azione=="CHTR" and num==10:
             continue
@@ -52,18 +52,18 @@ for azione in tqdm(azioni):
         print(len(values))
         lista=[]
         for value in values:
-            print(value.text)
+            #print(value.text)
             lista.append(value.text)
-        print(lista)
+       # print(lista)
         if len(lista)==0:
-            continue
+            break
         new = []
         for val in lista:
             if val.strip() != '' and val != 'Current Assets' and val != "Non-Current Assets" and val != "Current Liabilities" and val != "Non-Current Liabilities" and val!='ASSETS' and val!='LIABILITIES'and val!="SHAREHOLDERS' EQUITY":
                 new.append(val)
 
-        print(new)
-        print(len(new))
+        #print(new)
+        #print(len(new))
         lista=new
         lista2=[]
         for val in lista:
