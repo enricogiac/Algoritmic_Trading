@@ -15,31 +15,78 @@ import re
 
 driver=webdriver.Firefox()
 fataframes=[]
-azioni=["ACRE","ACRO", "ACRS", "ACRV", "ACRX", "ACST", "ACT", "ACTG",
-    "ACU", "ACV", "ACVA", "ACXP", "ADAG", "ADAP", "ADBE", "ADC", "ADC^A", "ADCT",
-    "ADD", "ADEA", "ADER", "ADERW", "ADES", "ADEX", "ADI", "ADIL", "ADILW", "ADM",
-    "ADMA", "ADMP", "ADN", "ADNT", "ADNWW", "ADOC", "ADOCR", "ADOCW", "ADP", "ADPT",
-    "ADRT", "ADSE", "ADSEW", "ADSK", "ADT", "ADTH", "ADTHW", "ADTN", "ADTX", "ADUS",
-    "ADV", "ADVM", "ADVWW", "ADX", "ADXN", "AE", "AEAE", "AEAEW", "AEE", "AEF",
-    "AEFC", "AEG", "AEHL", "AEHR", "AEI", "AEIS", "AEL", "AEL^A", "AEL^B", "AEM",
-    "AEMD", "AENZ", "AEO", "AEP", "AEPPZ", "AER", "AES", "AESC", "AESI", "AEVA",
-    "AEY", "AEYE", "AEZS", "AFAR", "AFARU", "AFB", "AFBI", "AFCG", "AFG", "AFGB",
-    "AFGC", "AFGD", "AFGE", "AFIB", "AFL", "AFMD", "AFRI", "AFRIW", "AFRM", "AFT",
-    "AFTR"] 
-numeri=[10,9,8,7,6,5,4,3,2,1]
+azioni=[ "AFTR", "AFYA", "AG", "AGAC", "AGAE", "AGBA", "AGBAW", "AGCO", "AGD",
+    "AGE", "AGEN", "AGFY", "AGI", "AGIL", "AGILW", "AGIO", "AGL", "AGLE",
+    "AGM", "AGM^C", "AGM^D", "AGM^E", "AGM^F", "AGM^G", "AGMH", "AGNC",
+    "AGNCL", "AGNCM", "AGNCN", "AGNCO", "AGNCP", "AGO", "AGR", "AGRI",
+    "AGRIW", "AGRO", "AGRX", "AGS", "AGTI", "AGX", "AGYS", "AHCO", "AHG",
+    "AHH", "AHH^A", "AHI", "AHL^C", "AHL^D", "AHL^E", "AHRN", "AHRNU",
+    "AHT", "AHT^D", "AHT^F", "AHT^G", "AHT^H", "AHT^I", "AI", "AIB", "AIC",
+    "AIF", "AIG", "AIG^A", "AIH", "AIHS", "AIM", "AIMAU", "AIMD", "AIMDW",
+    "AIN", "AINC", "AIO", "AIP", "AIR", "AIRC", "AIRG", "AIRI", "AIRS",
+    "AIRT", "AIRTP", "AIT", "AIU", "AIV", "AIXI", "AIZ", "AIZN", "AJG",
+    "AJRD", "AJX", "AJXA", "AKA", "AKAM", "AKAN", "AKBA", "AKLI", "AKO/A",
+    "AKO/B", "AKR", "AKRO", "AKTS", "AKTX", "AKU", "AKYA", "AL", "AL^A",
+    "ALAR", "ALB", "ALBT", "ALC", "ALCC", "ALCO", "ALCYU", "ALDX", "ALE",
+    "ALEC", "ALEX", "ALG", "ALGM", "ALGN", "ALGS", "ALGT", "ALHC", "ALIM",
+    "ALIT", "ALK", "ALKS", "ALKT", "ALL", "ALL^B", "ALL^H", "ALL^I", "ALLE",
+    "ALLG", "ALLK", "ALLO", "ALLR", "ALLT", "ALLY", "ALNY", "ALOR", "ALORU",
+    "ALOT", "ALPA", "ALPAU", "ALPAW", "ALPN", "ALPP", "ALPS", "ALRM", "ALRN",
+    "ALRS", "ALSA", "ALSAR", "ALSAW", "ALSN", "ALT", "ALTG", "ALTG^A", "ALTI",
+    "ALTIW", "ALTO", "ALTR", "ALTU", "ALTUW", "ALV", "ALVO", "ALVR", "ALX",
+    "ALXO", "ALYA", "ALZN", "AM", "AMAL", "AMAM", "AMAO", "AMAOU", "AMAT",
+    "AMBA", "AMBC", "AMBI", "AMBO", "AMBP", "AMC", "AMCR", "AMCX", "AMD",
+    "AME", "AMED", "AMEH", "AMG", "AMGN", "AMH", "AMH^G", "AMH^H", "AMK",
+    "AMKR", "AMLI", "AMLX", "AMN", "AMNB", "AMOT", "AMP", "AMPE", "AMPG",
+    "AMPGW", "AMPH", "AMPL", "AMPS", "AMPX", "AMPY", "AMR", "AMRC", "AMRK",
+    "AMRN", "AMRS", "AMRX", "AMS", "AMSC", "AMSF", "AMST", "AMSWA", "AMT",
+    "AMTB", "AMTD", "AMTI", "AMTX", "AMV", "AMWD", "AMWL", "AMX", "AMZN",
+    "AN", "ANAB", "ANDE", "ANEB", "ANET", "ANF", "ANGH", "ANGHW", "ANGI",
+    "ANGN", "ANGO", "ANIK", "ANIP", "ANIX", "ANNX", "ANPC", "ANSS", "ANTE",
+    "ANTX", "ANVS", "ANY", "ANZU", "ANZUU", "ANZUW", "AOD", "AOGO", "AOGOU",
+    "AOMR", "AON", "AORT", "AOS", "AOSL", "AOUT", "AP", "APA", "APAC",
+    "APACW", "APAM", "APCA", "APCX", "APCXW", "APD", "APDN", "APE", "APEI",
+    "APG", "APGB", "APGN", "APGNW", "APH", "API", "APLD", "APLE", "APLM",
+    "APLMW", "APLS", "APLT", "APM", "APMI", "APMIU", "APMIW", "APO", "APOG",
+    "APP", "APPF", "APPH", "APPHW", "APPN", "APPS", "APRE", "APRN", "APT",
+    "APTM", "APTMU", "APTMW", "APTO", "APTV", "APTV^A", "APTX", "APVO",
+    "APWC", "APXI", "APXIU", "APXIW", "APYX", "AQB", "AQMS", "AQN", "AQNA",
+    "AQNB", "AQNU", "AQST", "AQU", "AQUA", "AQUNR", "AR", "ARAV", "ARAY",
+    "ARBB", "ARBE", "ARBEW", "ARBG", "ARBGW", "ARBK", "ARBKL", "ARC", "ARCB",
+    "ARCC", "ARCE", "ARCH", "ARCO", "ARCT", "ARDC", "ARDS", "ARDX", "ARE",
+    "AREB", "AREBW", "AREC", "AREN", "ARES", "ARGD", "ARGO", "ARGO^A", "ARGX",
+    "ARHS", "ARI", "ARIS", "ARIZ", "ARIZR", "ARIZU", "ARIZW", "ARKO", "ARKOW",
+    "ARKR", "ARL", "ARLO", "ARLP", "ARMK", "ARMP", "ARNC", "AROC", "AROW",
+    "ARQQ", "ARQQW", "ARQT", "ARR", "ARR^C", "ARRW", "ARRWU", "ARRWW", "ARRY",
+    "ARTE", "ARTEU", "ARTL", "ARTLW", "ARTNA", "ARTW", "ARVL", "ARVN", "ARW",
+    "ARWR", "ARYD", "ARYE", "ASA", "ASAI", "ASAN", "ASB", "ASB^E", "ASB^F",
+    "ASBA", "ASC", "ASCA", "ASCAU", "ASCB", "ASCBU", "ASCBW", "ASG", "ASGI",
+    "ASGN", "ASH", "ASIX", "ASLE", "ASLN", "ASM", "ASMB", "ASML", "ASND",
+    "ASNS", "ASO", "ASPI", "ASPN", "ASPS", "ASR", "ASRT", "ASRV", "ASST",
+    "ASTC", "ASTE", "ASTI", "ASTL", "ASTLW", "ASTR", "ASTS", "ASTSW", "ASUR",
+    "ASX", "ASXC", "ASYS", "ATAI", "ATAK", "ATAKW", "ATAQ", "ATAT", "ATCO^D",
+    "ATCO^H", "ATCO^I", "ATCOL", "ATEC", "ATEK", "ATEN", "ATER", "ATEX",
+    "ATGE", "ATH^A", "ATH^B", "ATH^C", "ATH^D", "ATH^E", "ATHA", "ATHE",
+    "ATHM", "ATHX", "ATI", "ATIF", "ATIP", "ATKR", "ATLC", "ATLCL", "ATLCP",
+    "ATLO", "ATLX", "ATMC", "ATMCU", "ATMCW", "ATMVU", "ATNF", "ATNFW", "ATNI",
+    "ATNM", "ATNX", "ATO", "ATOM", "ATOS", "ATR", "ATRA", "ATRC", "ATRI",
+    "ATRO", "ATSG", "ATTO", "ATUS", "ATVI", "ATXG", "ATXI", "ATXS", "AU",
+    "AUB", "AUB^A", "AUBN"]
+
+numeri=[1,2,3,4,5,6,7,8,9,10]
 regex = r'\d{2}-\d{4}'
 for azione in tqdm(azioni):
-	#time.sleep(3)
     print(f"{azione}")
 
     dizio_tot=[]
     
     for num in numeri:
         print(f"{azione} e pag {num}")
-        if azione=="CHTR" and num==10:
-            continue
-
-        driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
+        try:
+        	driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
+        except:
+        	continue
+       # driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
         try:
             WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html body.hide-menu-for-landscape.add-ads-premier div.a__sc-np32r2-0.eqYWHN div.Card-sc-1s2p2gv-0.a__sc-3vtlsk-0.kDNyTh.jXixFa div.Card__CardHeader-sc-1s2p2gv-1.a__sc-3vtlsk-1.fZGtpv.cVIXeq div.Frame-sc-1d4hofp-0.fRUcSy button.Button__StyledButton-a1qza5-0.jkvvVr"))).click()
         except:
@@ -228,6 +275,6 @@ fataframes_1=pd.concat(fataframes)
 print(fataframes_1)
 fataframes_1=fataframes_1.reset_index(drop=True)
 print(fataframes_1)
-fataframes_1.to_csv("Balance_dati.csv")
+fataframes_1.to_csv("Balance_dati200_700.csv")
 
 # #acb pag lista2
