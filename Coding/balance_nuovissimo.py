@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
 import time
@@ -15,7 +16,7 @@ import re
 
 driver=webdriver.Firefox()
 fataframes=[]
-azioni=[ "AFTR", "AFYA", "AG", "AGAC", "AGAE", "AGBA", "AGBAW", "AGCO", "AGD",
+azioni=["AFTR", "AFYA", "AG", "AGAC", "AGAE", "AGBA", "AGBAW", "AGCO", "AGD",
     "AGE", "AGEN", "AGFY", "AGI", "AGIL", "AGILW", "AGIO", "AGL", "AGLE",
     "AGM", "AGM^C", "AGM^D", "AGM^E", "AGM^F", "AGM^G", "AGMH", "AGNC",
     "AGNCL", "AGNCM", "AGNCN", "AGNCO", "AGNCP", "AGO", "AGR", "AGRI",
@@ -71,50 +72,37 @@ azioni=[ "AFTR", "AFYA", "AG", "AGAC", "AGAE", "AGBA", "AGBAW", "AGCO", "AGD",
     "ATLO", "ATLX", "ATMC", "ATMCU", "ATMCW", "ATMVU", "ATNF", "ATNFW", "ATNI",
     "ATNM", "ATNX", "ATO", "ATOM", "ATOS", "ATR", "ATRA", "ATRC", "ATRI",
     "ATRO", "ATSG", "ATTO", "ATUS", "ATVI", "ATXG", "ATXI", "ATXS", "AU",
-    "AUB", "AUB^A", "AUBN"]
-
+    "AUB", "AUB^A", "AUBN"] 
 numeri=[1,2,3,4,5,6,7,8,9,10]
 regex = r'\d{2}-\d{4}'
-driver.implicitly_wait(10)
 for azione in tqdm(azioni):
+	#time.sleep(3)
     print(f"{azione}")
 
-
-    try:
-    	driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage")
-    except:
-    	continue
     dizio_tot=[]
     
     for num in numeri:
         print(f"{azione} e pag {num}")
-       # driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
+        try:
+            driver.set_page_load_timeout(30)  # Imposta il timeout a 5 secondi
+            driver.get(f"https://www.barchart.com/stocks/quotes/{azione}/balance-sheet/quarterly?reportPage={num}")
+        except TimeoutException:
+            print("Timeout di caricamento della pagina")
+            continue
+        except:
+            print("Errore durante il caricamento della pagina")
+            continue
+
         try:
             WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html body.hide-menu-for-landscape.add-ads-premier div.a__sc-np32r2-0.eqYWHN div.Card-sc-1s2p2gv-0.a__sc-3vtlsk-0.kDNyTh.jXixFa div.Card__CardHeader-sc-1s2p2gv-1.a__sc-3vtlsk-1.fZGtpv.cVIXeq div.Frame-sc-1d4hofp-0.fRUcSy button.Button__StyledButton-a1qza5-0.jkvvVr"))).click()
         except:
-        	pass
-
-        button=driver.find_element(By.CSS_SELECTOR, "html body.hide-menu-for-landscape.add-ads-premier main#bc-main-content-wrapper.off-canvas-wrap.ng-isolate-scope div.inner-wrap div.main-content-wrapper.content.js-main-content-wrapper div.row div.large-12.columns div.one-column-block div.row div#main-content-column.small-12.columns.main-column div.column-inner div.bc-financial-report div.bc-financial-report__pagination.clearfix div.right a.bc-button.light-blue.ok").text
-        print(button)
-        if (num==1):
-
-        	pass
-        elif (button!="NEXT"):
-        	break
-        else:
-
-        	try:
-
-        		WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"html body.hide-menu-for-landscape.add-ads-premier main#bc-main-content-wrapper.off-canvas-wrap.ng-isolate-scope div.inner-wrap div.main-content-wrapper.content.js-main-content-wrapper div.row div.large-12.columns div.one-column-block div.row div#main-content-column.small-12.columns.main-column div.column-inner div.bc-financial-report div.bc-financial-report__pagination.clearfix div.right a.bc-button.light-blue.ok"))).click()
-        	except:
-        		continue
-
+            pass
 
                 #time.sleep(3)
-
-
-        values=driver.find_elements(By.CSS_SELECTOR, "html body.hide-menu-for-landscape.add-ads-premier main#bc-main-content-wrapper.off-canvas-wrap.ng-isolate-scope div.inner-wrap div.main-content-wrapper.content.js-main-content-wrapper div.row div.large-12.columns div.one-column-block div.row div#main-content-column.small-12.columns.main-column div.column-inner div.bc-financial-report div.bc-table-scrollable div.bc-table-scrollable-inner ng-transclude table.ng-scope tbody tr td")
-
+        try:
+            values=WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "html body.hide-menu-for-landscape.add-ads-premier main#bc-main-content-wrapper.off-canvas-wrap.ng-isolate-scope div.inner-wrap div.main-content-wrapper.content.js-main-content-wrapper div.row div.large-12.columns div.one-column-block div.row div#main-content-column.small-12.columns.main-column div.column-inner div.bc-financial-report div.bc-table-scrollable div.bc-table-scrollable-inner ng-transclude table.ng-scope tbody tr td")))
+        except:
+            break
         print(len(values))
         lista=[]
         for value in values:
@@ -282,7 +270,7 @@ for azione in tqdm(azioni):
 
     if len(dizio_tot)>0:
         result=pd.concat(dizio_tot)
-        print(result)
+        #print(result)
     else:
             continue
     fataframes.append(result)
@@ -290,9 +278,9 @@ for azione in tqdm(azioni):
 
 driver.quit()   
 fataframes_1=pd.concat(fataframes)
-print(fataframes_1)
+#print(fataframes_1)
 fataframes_1=fataframes_1.reset_index(drop=True)
-print(fataframes_1)
-fataframes_1.to_csv("Balance_dati200_700.csv")
+#print(fataframes_1)
+fataframes_1.to_csv("Balance_dati.csv")
 
 # #acb pag lista2
